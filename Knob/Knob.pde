@@ -2,7 +2,7 @@
 // Controlling a servo position using a potentiometer (variable resistor) 
 // by Michal Rinott <http://people.interaction-ivrea.it/m.rinott> 
 
-// reference code from http://ardx.org/CODE12S
+// reference code from http://ardx.org/CODE12S  
 
 // Matthew L Beckler http://www.mbeckler.org/microcontrollers/rgb_led/
 
