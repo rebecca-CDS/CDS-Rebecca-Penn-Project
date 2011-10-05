@@ -33,14 +33,17 @@ int greenVal = 255;
 
 void setup() 
 { 
-  reference = analogRead(potpin);
   
+  // read in reference
+  
+  reference = analogRead(potpin);
+
   Firmata.setFirmwareVersion(0, 1);
   Firmata.begin(57600);
-    
-//  Serial.begin(9600);
-  myservo.attach(9);  // attaches the servo on pin 9 to the servo object 
-  
+
+  //Serial.begin(9600);
+  //Serial.print("reference: "); Serial.println(reference);
+
   analogWrite(redPin, redVal);
   analogWrite(greenPin, greenVal);
   analogWrite(bluePin, blueVal);
@@ -57,48 +60,64 @@ void setup()
 
 
 void loop() { 
-  val = analogRead(potpin);         // reads the value of the potentiometer (value between 0 and 1023) 
-  
-  Firmata.sendAnalog(potpin, val);
-  
- //Serial.println(val); 
- while (val > reference + 20){
-   val = analogRead(potpin);     // reads the value of the potentiometer (value between 0 and 1023) 
-    Firmata.sendAnalog(potpin, val);
-//   Serial.println(val); 
- }
+delay(1000);
  
- // cut
- if (val < reference - 20) { // when light is high
-    if (pathClosed = false) {
+
+  val = analogRead(potpin);         // reads the value of the potentiometer (value between 0 and 1023) 
+  //Serial.println(val);
+
+// send firmata state
+// reference
+Firmata.sendAnalog(0, reference);
+Firmata.sendAnalog(1, val);
+int openValue = pathClosed ? 1 : 0;
+Firmata.sendAnalog(2, openValue);
+
+
+
+
+  // cut
+  if (val > reference - 30) { // when light is high
+    if (pathClosed == false) {
       closePath();
     }
- } else if (val > reference + 20) { // if someone standing there
-   if (pathClosed = true) {
-     openPath();
-   }
- }
+  } 
+  else if (val < reference + 50) { // if someone standing there
+    if (pathClosed == true) {
+      openPath();
+    }
+  }
 
 
-function closePath() {
+
+
+  // waits for the servo to get there   
+} 
+
+void closePath() {
   // spin servo
+  myservo.attach(9);  // attaches the servo on pin 9 to the servo object 
+  //Serial.println("closing");
   myservo.write(0);
   // set servo to 0
-   delay(500);
-   myservo.write(90);
- pathClosed = true;  
+  delay(500);
+  myservo.write(90);
+  myservo.detach();
+  pathClosed = true;  
 }
 
-function openPath() {
- // spin servo
- myservo.write(180);
+void openPath() {
+  // spin servo
+  myservo.attach(9);  // attaches the servo on pin 9 to the servo object 
+  //Serial.println("opening");
+  myservo.write(180);
   // move servo to 90 degrees 
-    delay(500);
-     myservo.write(90);
- pathClosed= false; 
-  
+  delay(500);
+  myservo.write(90);
+  myservo.detach();
+  pathClosed= false; 
+
 }
 
-                        // waits for the servo to get there   
-} 
+
 
