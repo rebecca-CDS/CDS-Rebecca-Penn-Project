@@ -1,12 +1,11 @@
 // Based on File > Examples > Servo > Knob
-// Controlling a servo position using a potentiometer (variable resistor) 
+// Controlling a servo position using a photo-resistor 
 // by Michal Rinott <http://people.interaction-ivrea.it/m.rinott> 
-
+// Matthew L Beckler http://www.mbeckler.org/microcontrollers/rgb_led/
 // reference code from http://ardx.org/CODE12S
 
-// Matthew L Beckler http://www.mbeckler.org/microcontrollers/rgb_led/
-
 // referenced codes above, some parts used from them, but do different things in my code than in theirs.
+// code by Rebecca Penn 3333620, for ARCH1391 2011 submission Module 2
 
 #include <Firmata.h>
 
@@ -26,18 +25,10 @@ int val1;    // variable to read the value from the analog pin for photoresistor
 int val2;    // variable to read the value from the analog pin for photoresistor 2
 int val3;    // variable to read the value from the analog pin for photoresistor 3
 
+// tunnel closed at each servo point
 boolean pathClosed1 = true;
 boolean pathClosed2 = true;
 boolean pathClosed3 = true;
-
-//int redPin = 10;
-//int greenPin = 11;
-//int bluePin = 12;
-
-// lights all fully on
-//int redVal = 255;
-//int blueVal = 255;
-//int greenVal = 255;
 
 void setup() 
 { 
@@ -52,17 +43,12 @@ void setup()
   //Serial.begin(9600);
   //Serial.print("reference: "); Serial.println(reference);
 
- // analogWrite(redPin, redVal);
- // analogWrite(greenPin, greenVal);
- // analogWrite(bluePin, blueVal);
-
 } 
 
 void loop() { 
 delay(1000);
- 
 
-  val1 = analogRead(pr1);         // reads the value of the potentiometer (value between 0 and 1023) 
+  val1 = analogRead(pr1);  // reads the value of the photoresistor (value between 0 and 1023) 
   //Serial.println(val);
   val2 = analogRead(pr2);
   val3 = analogRead(pr3);
@@ -131,8 +117,8 @@ void closePath1() {
   // spin servo
   servo1.attach(9);  // attaches the servo on pin 9 to the servo object 
   //Serial.println("closing");
-  servo1.write(0);  //  servo spins full speed for 700 milliseconds
-  delay(700);
+  servo1.write(0);  //  servo spins full speed for 600 milliseconds
+  delay(600);
   servo1.write(90);  // servo stops
   servo1.detach();
   pathClosed1 = true;  
@@ -142,8 +128,8 @@ void openPath1() {
   // spin servo
   servo1.attach(9);  // attaches the servo on pin 9 to the servo object 
   //Serial.println("opening");
-  servo1.write(180);  // servo spins full speed for 700 milliseconds
-  delay(700);
+  servo1.write(180);  // servo spins full speed for 600 milliseconds
+  delay(600);
   servo1.write(90);  // servo stops
   servo1.detach();
   pathClosed1= false; 
@@ -155,8 +141,8 @@ void closePath2() {
   // spin servo
   servo2.attach(10);  // attaches the servo on pin 10 to the servo object 
   //Serial.println("closing");
-  servo2.write(0);  // servo spins full speed for 700 milliseconds
-  delay(700);
+  servo2.write(0);  // servo spins full speed for 600 milliseconds
+  delay(600);
   servo2.write(90);  // servo stops
   servo2.detach();
   pathClosed2 = true;  
@@ -166,20 +152,21 @@ void openPath2() {
   // spin servo
   servo2.attach(10);  // attaches the servo on pin 10 to the servo object 
   //Serial.println("opening");
-  servo2.write(180);  // servo spins full speed for 700 milliseconds
-  delay(700);
+  servo2.write(180);  // servo spins full speed for 600 milliseconds
+  delay(600);
   servo2.write(90);  // servo stops
   servo2.detach();
   pathClosed2= false; 
 
 }
+
 //SERVO 3
 void closePath3() {
   // spin servo
   servo3.attach(11);  // attaches the servo on pin 11 to the servo object 
   //Serial.println("closing");
-  servo3.write(0);  // servo spins full speed for 700 milliseconds
-  delay(700);
+  servo3.write(0);  // servo spins full speed for 600 milliseconds
+  delay(600);
   servo3.write(90);  // servo stops
   servo3.detach();
   pathClosed3 = true;  
@@ -189,8 +176,8 @@ void openPath3() {
   // spin servo
   servo3.attach(11);  // attaches the servo on pin 11 to the servo object 
   //Serial.println("opening");
-  servo3.write(180);  // servo moves full speed for 700 milliseconds
-  delay(700);
+  servo3.write(180);  // servo moves full speed for 600 milliseconds
+  delay(600);
   servo3.write(90);  // servo stops
   servo3.detach();
   pathClosed3= false; 
